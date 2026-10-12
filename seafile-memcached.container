@@ -1,0 +1,13 @@
+[Unit]
+Description=Seafile Memcached service
+Requires=traefik-public-network.service
+After=traefik-public-network.service
+
+[Container]
+ContainerName=seafile-memcached
+Image=docker.io/library/memcached:1.6-alpine
+
+Network=traefik-public.network
+
+[Install]
+WantedBy=default.target

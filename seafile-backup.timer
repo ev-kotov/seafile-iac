@@ -1,0 +1,10 @@
+[Unit]
+Description=Trigger Seafile Database Backup daily
+
+[Timer]
+OnCalendar=*-*-* 15:00:00
+Persistent=true
+RandomizedDelaySec=30min
+
+[Install]
+WantedBy=timers.target

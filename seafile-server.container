@@ -1,0 +1,26 @@
+[Unit]
+Description=Seafile Main Server
+Requires=seafile-db.service seafile-memcached.service
+After=seafile-db.service seafile-memcached.service
+
+[Container]
+ContainerName=seafile-server
+Image=docker.io/seafileltd/seafile-mc:11.0-latest
+EnvironmentFile=%h/projects/seafile-iac/seafile.env
+Volume=/srv/seafile-data/seafile:/shared:Z,U
+Volume=/etc/localtime:/etc/localtime:ro
+
+Network=traefik-public.network
+
+Label="traefik.enable=true"
+Label="traefik.http.routers.seafile.rule=Host(`seafile.standcat.ru`)"
+Label="traefik.http.routers.seafile.entrypoints=websecure"
+Label="traefik.http.routers.seafile.tls=true"
+Label="traefik.http.routers.seafile.tls.certresolver=letsencrypt"
+Label="traefik.http.services.seafile.loadbalancer.server.port=80"
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

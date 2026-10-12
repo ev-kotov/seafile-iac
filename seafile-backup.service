@@ -1,0 +1,11 @@
+[Unit]
+Description=Seafile Database Backup Service
+Requires=seafile-db.service
+After=seafile-db.service
+
+[Service]
+Type=oneshot
+ExecStart=%h/projects/seafile-iac/backup-db.sh
+
+[Install]
+WantedBy=default.target
