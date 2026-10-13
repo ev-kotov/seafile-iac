@@ -18,6 +18,8 @@ Label="traefik.http.routers.seafile.entrypoints=websecure"
 Label="traefik.http.routers.seafile.tls=true"
 Label="traefik.http.routers.seafile.tls.certresolver=letsencrypt"
 Label="traefik.http.services.seafile.loadbalancer.server.port=80"
+Label="traefik.http.routers.seafile.middlewares=seafile-headers"
+Label="traefik.http.middlewares.seafile-headers.headers.customrequestheaders.X-Forwarded-Proto=https"
 
 [Service]
 Restart=always
