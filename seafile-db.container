@@ -11,5 +11,8 @@ Volume=/srv/seafile-data/db:/var/lib/mysql:Z,U
 
 Network=traefik-public.network
 
+[Service]
+Restart=always
+
 [Install]
 WantedBy=default.target

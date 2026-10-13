@@ -22,7 +22,7 @@ chmod 755 "$DATA_DIR/backups"
 chmod 644 "$PROJECT_DIR/seafile.env"
 chmod +x "$PROJECT_DIR/backup-db.sh"
 
-base_log_step "Containers. Creating Quadlet symlinks."
+base_log_step "Containers and networks. Creating Quadlet symlinks."
 
 ln -sf "$PROJECT_DIR/seafile-db.container" "$QUADLET_DIR/"
 ln -sf "$PROJECT_DIR/seafile-memcached.container" "$QUADLET_DIR/"

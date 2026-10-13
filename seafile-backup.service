@@ -1,6 +1,6 @@
 [Unit]
 Description=Seafile Database Backup Service
-Requires=seafile-db.service
+Wants=seafile-db.service
 After=seafile-db.service
 
 [Service]
