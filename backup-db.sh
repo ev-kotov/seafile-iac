@@ -28,3 +28,10 @@ podman exec -e MYSQL_PWD="$MYSQL_ROOT_PASSWORD" seafile-db \
 find "$BACKUP_DIR" -type f -name "seafile_db_*.sql.gz" -mtime +3 -delete
 
 base_log_ok "Backup saved in $BACKUP_DIR"
+
+MSG="Backup completed and saved to $BACKUP_DIR"
+
+base_log_ok "$MSG"
+
+source "$HOME/projects/notify-sh-lib/lib/email.sh"
+email_send "genre-grunt-dander@duck.com" "Systemd notify - seafile backup" "$MSG" 
