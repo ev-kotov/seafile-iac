@@ -34,4 +34,4 @@ MSG="Backup completed and saved to $BACKUP_DIR"
 base_log_ok "$MSG"
 
 source "$HOME/projects/notify-sh-lib/lib/email.sh"
-email_send "genre-grunt-dander@duck.com" "Systemd notify - seafile backup" "$MSG" 
+email_send "genre-grunt-dander@duck.com" "Systemd notify - seafile database backup" "$MSG" 
