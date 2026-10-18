@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-PODMAN_SH_LIB="$HOME/projects/podman-sh-lib"
-source "$PODMAN_SH_LIB/lib/podman.sh"
+source "$HOME/projects/podman-sh-lib/lib/podman.sh"
 
 BACKUP_DIR="/srv/seafile-data/backups"
 ENV_FILE="$HOME/projects/seafile-iac/seafile.env"
@@ -21,9 +20,11 @@ fi
 base_log_step "Run backup and rotation."
 
 podman exec -e MYSQL_PWD="$MYSQL_ROOT_PASSWORD" seafile-db \
-    mysqldump --single-transaction --routines --triggers \
+    mariadb-dump --single-transaction --routines --triggers \
     --databases ccnet_db seafile_db seahub_db \
     | gzip > "$BACKUP_DIR/seafile_db_$TIMESTAMP.sql.gz"
+
+podman_marker_set "$BACKUP_DIR/.last-dump-is-ok"
 
 find "$BACKUP_DIR" -type f -name "seafile_db_*.sql.gz" -mtime +3 -delete
 
