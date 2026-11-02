@@ -3,14 +3,13 @@ set -e
 
 source "$HOME/projects/podman-sh-lib/lib/podman.sh"
 
-BACKUP_DIR="/srv/seafile-data/backups"
-ENV_FILE="$HOME/projects/seafile-iac/seafile.env"
-TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-
 base_log_step "Preparing directories and files."
+BACKUP_DIR="/srv/seafile-data/backups"
 mkdir -p "$BACKUP_DIR"
 
-export $(grep -E '^(MYSQL_ROOT_PASSWORD)=' "$ENV_FILE" | xargs)
+set -a
+source "$HOME/projects/seafile-iac/seafile.env"
+set +a
 
 if ! podman ps --format '{{.Names}}' | grep -q "^seafile-db$"; then
     base_log_error "Container seafile-db not started. Backup stopped." >&2
@@ -18,6 +17,8 @@ if ! podman ps --format '{{.Names}}' | grep -q "^seafile-db$"; then
 fi
 
 base_log_step "Run backup and rotation."
+
+TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 
 podman exec -e MYSQL_PWD="$MYSQL_ROOT_PASSWORD" seafile-db \
     mariadb-dump --single-transaction --routines --triggers \
@@ -35,4 +36,4 @@ MSG="Backup completed and saved to $BACKUP_DIR"
 base_log_ok "$MSG"
 
 source "$HOME/projects/notify-sh-lib/lib/email.sh"
-email_send "genre-grunt-dander@duck.com" "Systemd notify - seafile database backup" "$MSG" 
+email_send "$EMAIL" "Systemd notify - seafile database backup" "$MSG"
